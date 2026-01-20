@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Patients - Roblox Health Service</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../assets/css/nhsuk.min.css">
+  <style>
+    table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+    th, td { border: 1px solid #d0d0d0; padding: 0.5rem; text-align: left; }
+  </style>
+</head>
+<body class="nhsuk-body nhsuk-clearfix">
+
+<header class="nhsuk-header" role="banner">
+  <div class="nhsuk-width-container nhsuk-header__container">
+    <div class="nhsuk-header__content">
+      <span class="nhsuk-header__logo"><span class="nhsuk-header__logo-text">Roblox Health Service</span></span>
+      <nav class="nhsuk-header__navigation" aria-label="Primary navigation">
+        <ul class="nhsuk-header__navigation-list">
+          <li class="nhsuk-header__navigation-item"><a class="nhsuk-header__navigation-link" href="dashboard.html">Dashboard</a></li>
+          <li class="nhsuk-header__navigation-item"><a class="nhsuk-header__navigation-link" href="patients.html">Patients</a></li>
+          <li class="nhsuk-header__navigation-item"><a class="nhsuk-header__navigation-link" href="add-patient.html">Add Patient</a></li>
+          <li class="nhsuk-header__navigation-item"><a class="nhsuk-header__navigation-link" href="login.html">Logout</a></li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</header>
+
+<div class="nhsuk-width-container">
+  <main class="nhsuk-main-wrapper">
+    <h1 class="nhsuk-heading-xl">Patient List</h1>
+
+    <label class="nhsuk-label" for="search">Search Patients</label>
+    <input class="nhsuk-input" type="text" id="search" placeholder="Search by name...">
+
+    <table id="patientTable">
+      <thead>
+        <tr><th>Name</th><th>Room</th><th>Condition</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>John Doe</td><td>101</td><td>Stable</td></tr>
+        <tr><td>Jane Smith</td><td>102</td><td>Critical</td></tr>
+        <tr><td>Bob Johnson</td><td>103</td><td>Recovering</td></tr>
+      </tbody>
+    </table>
+
+    <script>
+      const searchInput = document.getElementById('search');
+      const table = document.getElementById('patientTable').tBodies[0];
+      searchInput.addEventListener('input', function() {
+        const filter = this.value.toLowerCase();
+        Array.from(table.rows).forEach(row => {
+          row.style.display = row.cells[0].textContent.toLowerCase().includes(filter) ? '' : 'none';
+        });
+      });
+    </script>
+
+  </main>
+</div>
+
+<footer class="nhsuk-footer">
+  <div class="nhsuk-width-container">
+    <p class="nhsuk-body-s">© Roblox Health Service</p>
+  </div>
+</footer>
+
+</body>
+</html>
