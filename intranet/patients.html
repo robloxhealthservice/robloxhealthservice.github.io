@@ -8,6 +8,15 @@
   <style>
     table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
     th, td { border: 1px solid #d0d0d0; padding: 0.5rem; text-align: left; }
+    th { cursor: pointer; background: #f7f7f7; }
+    button { margin-right: 0.5rem; }
+    input.edit-field, select.edit-field { width: 100%; box-sizing: border-box; }
+    .badge {
+      display: inline-block; padding: 0.25rem 0.5rem; border-radius: 4px; color: white; font-weight: bold;
+    }
+    .Stable { background-color: green; }
+    .Critical { background-color: red; }
+    .Recovering { background-color: orange; }
   </style>
 </head>
 <body class="nhsuk-body nhsuk-clearfix">
@@ -28,37 +37,6 @@
   </div>
 </header>
 
-  <tbody id="patientBody">
-  <!-- Rows will be added dynamically -->
-</tbody>
-
-<script>
-  const tableBody = document.getElementById('patientBody');
-
-  // Load patients from localStorage
-  let patients = JSON.parse(localStorage.getItem('patients') || '[]');
-
-  function renderTable(filter = '') {
-    tableBody.innerHTML = '';
-    patients
-      .filter(p => p.name.toLowerCase().includes(filter))
-      .forEach(p => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `<td>${p.name}</td><td>${p.room}</td><td>${p.condition}</td>`;
-        tableBody.appendChild(tr);
-      });
-  }
-
-  // Initial render
-  renderTable();
-
-  // Search filter
-  const searchInput = document.getElementById('search');
-  searchInput.addEventListener('input', function() {
-    renderTable(this.value.toLowerCase());
-  });
-</script>
-
 <div class="nhsuk-width-container">
   <main class="nhsuk-main-wrapper">
     <h1 class="nhsuk-heading-xl">Patient List</h1>
@@ -66,25 +44,112 @@
     <label class="nhsuk-label" for="search">Search Patients</label>
     <input class="nhsuk-input" type="text" id="search" placeholder="Search by name...">
 
-    <table id="patientTable">
+    <table>
       <thead>
-        <tr><th>Name</th><th>Room</th><th>Condition</th></tr>
+        <tr>
+          <th onclick="sortTable('name')">Name</th>
+          <th onclick="sortTable('room')">Room</th>
+          <th onclick="sortTable('presenting')">Presenting Condition</th>
+          <th onclick="sortTable('diagnosis')">Diagnosis</th>
+          <th onclick="sortTable('status')">Status</th>
+          <th>Actions</th>
+        </tr>
       </thead>
-      <tbody>
-        <tr><td>John Doe</td><td>101</td><td>Stable</td></tr>
-        <tr><td>Jane Smith</td><td>102</td><td>Critical</td></tr>
-        <tr><td>Bob Johnson</td><td>103</td><td>Recovering</td></tr>
-      </tbody>
+      <tbody id="patientBody"></tbody>
     </table>
 
     <script>
-      const searchInput = document.getElementById('search');
-      const table = document.getElementById('patientTable').tBodies[0];
-      searchInput.addEventListener('input', function() {
-        const filter = this.value.toLowerCase();
-        Array.from(table.rows).forEach(row => {
-          row.style.display = row.cells[0].textContent.toLowerCase().includes(filter) ? '' : 'none';
+      let patients = JSON.parse(localStorage.getItem('patients') || '[]');
+      let sortAsc = true;
+      let currentSort = 'name';
+      const tableBody = document.getElementById('patientBody');
+
+      function savePatients() {
+        localStorage.setItem('patients', JSON.stringify(patients));
+        renderTable();
+      }
+
+      function renderTable(filter = '') {
+        tableBody.innerHTML = '';
+        patients.forEach((p, index) => {
+          if (p.name.toLowerCase().includes(filter)) {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+              <td><span>${p.name}</span></td>
+              <td><span>${p.room}</span></td>
+              <td><span>${p.presenting}</span></td>
+              <td><span>${p.diagnosis}</span></td>
+              <td><span class="badge ${p.status}">${p.status}</span></td>
+              <td>
+                <button onclick="editPatient(${index})">Edit</button>
+                <button onclick="deletePatient(${index})">Delete</button>
+              </td>
+            `;
+            tableBody.appendChild(tr);
+          }
         });
+      }
+
+      function deletePatient(index) {
+        if (confirm('Are you sure you want to delete this patient?')) {
+          patients.splice(index, 1);
+          savePatients();
+        }
+      }
+
+      function editPatient(index) {
+        const tr = tableBody.rows[index];
+        const p = patients[index];
+        tr.innerHTML = `
+          <td><input class="edit-field" value="${p.name}"></td>
+          <td><input class="edit-field" value="${p.room}"></td>
+          <td><input class="edit-field" value="${p.presenting}"></td>
+          <td><input class="edit-field" value="${p.diagnosis}"></td>
+          <td>
+            <select class="edit-field">
+              <option ${p.status==='Stable'?'selected':''}>Stable</option>
+              <option ${p.status==='Critical'?'selected':''}>Critical</option>
+              <option ${p.status==='Recovering'?'selected':''}>Recovering</option>
+            </select>
+          </td>
+          <td>
+            <button onclick="saveEdit(${index}, this)">Save</button>
+            <button onclick="renderTable(document.getElementById('search').value.toLowerCase())">Cancel</button>
+          </td>
+        `;
+      }
+
+      function saveEdit(index, btn) {
+        const tr = btn.closest('tr');
+        const inputs = tr.querySelectorAll('.edit-field');
+        patients[index] = {
+          name: inputs[0].value,
+          room: inputs[1].value,
+          presenting: inputs[2].value,
+          diagnosis: inputs[3].value,
+          status: inputs[4].value
+        };
+        savePatients();
+      }
+
+      function sortTable(column) {
+        if (currentSort === column) sortAsc = !sortAsc;
+        else { currentSort = column; sortAsc = true; }
+
+        patients.sort((a,b)=>{
+          if (a[column] < b[column]) return sortAsc?-1:1;
+          if (a[column] > b[column]) return sortAsc?1:-1;
+          return 0;
+        });
+        renderTable(document.getElementById('search').value.toLowerCase());
+      }
+
+      renderTable();
+
+      // Search filter
+      const searchInput = document.getElementById('search');
+      searchInput.addEventListener('input', function() {
+        renderTable(this.value.toLowerCase());
       });
     </script>
 
