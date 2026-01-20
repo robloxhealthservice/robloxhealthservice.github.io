@@ -2,10 +2,30 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Staff Login - Roblox Health Service</title>
+  <title>Staff Dashboard - Roblox Health Service</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <link rel="stylesheet" href="../assets/css/nhsuk.min.css">
+  <style>
+    .card-list { list-style: none; padding: 0; }
+    .card-list li { margin-bottom: 1rem; }
+    .card-link {
+      display: block;
+      padding: 1rem;
+      background: #f3f3f3;
+      border: 1px solid #d0d0d0;
+      border-radius: 4px;
+      text-decoration: none;
+      color: #0b0c0c;
+    }
+    .card-link:hover {
+      background: #e5e5e5;
+    }
+    .card-header {
+      font-weight: bold;
+      margin-bottom: .5rem;
+    }
+  </style>
 </head>
 <body class="nhsuk-body nhsuk-clearfix">
 
@@ -15,13 +35,13 @@
       <span class="nhsuk-header__logo">
         <span class="nhsuk-header__logo-text">Roblox Health Service</span>
       </span>
-
       <nav class="nhsuk-header__navigation" aria-label="Primary navigation">
         <ul class="nhsuk-header__navigation-list">
           <li class="nhsuk-header__navigation-item"><a class="nhsuk-header__navigation-link" href="../index.html">Home</a></li>
           <li class="nhsuk-header__navigation-item"><a class="nhsuk-header__navigation-link" href="../education.html">Education</a></li>
           <li class="nhsuk-header__navigation-item"><a class="nhsuk-header__navigation-link" href="../research.html">Research</a></li>
-          <li class="nhsuk-header__navigation-item"><a class="nhsuk-header__navigation-link" href="login.html">Staff Login</a></li>
+          <li class="nhsuk-header__navigation-item"><a class="nhsuk-header__navigation-link" href="dashboard.html">Dashboard</a></li>
+          <li class="nhsuk-header__navigation-item"><a class="nhsuk-header__navigation-link" href="login.html">Logout</a></li>
         </ul>
       </nav>
     </div>
@@ -30,17 +50,35 @@
 
 <div class="nhsuk-width-container">
   <main class="nhsuk-main-wrapper">
-    <h1 class="nhsuk-heading-xl">Staff Login</h1>
 
-    <form>
-      <label class="nhsuk-label" for="username">Username</label>
-      <input class="nhsuk-input" id="username" type="text">
+    <h1 class="nhsuk-heading-xl">Staff Dashboard</h1>
+    <p class="nhsuk-body-l">Welcome, staff member. Select an option below to continue.</p>
 
-      <label class="nhsuk-label" for="password">Password</label>
-      <input class="nhsuk-input" id="password" type="password">
+    <!-- Example card sections -->
+    <section>
+      <h2 class="nhsuk-heading-l">Patient Management</h2>
+      <ul class="card-list">
+        <li><a href="#" class="card-link"><span class="card-header">View Patient List</span> See all admitted patients.</a></li>
+        <li><a href="#" class="card-link"><span class="card-header">Add New Patient</span> Register a new patient.</a></li>
+      </ul>
+    </section>
 
-      <button class="nhsuk-button nhsuk-button--primary" type="submit">Login</button>
-    </form>
+    <section>
+      <h2 class="nhsuk-heading-l">Tasks & Orders</h2>
+      <ul class="card-list">
+        <li><a href="#" class="card-link"><span class="card-header">Pending Orders</span> Check outstanding orders.</a></li>
+        <li><a href="#" class="card-link"><span class="card-header">Task Board</span> View your tasks.</a></li>
+      </ul>
+    </section>
+
+    <section>
+      <h2 class="nhsuk-heading-l">Resources</h2>
+      <ul class="card-list">
+        <li><a href="#" class="card-link"><span class="card-header">Policies & Documents</span> Internal guides and policies.</a></li>
+        <li><a href="#" class="card-link"><span class="card-header">Training Materials</span> Staff training resources.</a></li>
+      </ul>
+    </section>
+
   </main>
 </div>
 
