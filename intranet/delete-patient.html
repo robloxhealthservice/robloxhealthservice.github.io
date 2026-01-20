@@ -6,11 +6,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="../assets/css/nhsuk.min.css">
 <style>
-.actions { margin-top:1rem; }
-.actions a, .actions button { margin-right:0.5rem; }
+.breadcrumb{font-size:0.9rem;margin-top:0.5rem;margin-bottom:1rem;}
+.breadcrumb a{color:#005eb8;text-decoration:none;}
+.breadcrumb a:hover{text-decoration:underline;}
+.nhsuk-button{margin-right:0.5rem;}
 </style>
 </head>
 <body class="nhsuk-body nhsuk-clearfix">
+
 <header class="nhsuk-header">
 <div class="nhsuk-width-container nhsuk-header__container">
 <span class="nhsuk-header__logo-text">Roblox Health Service</span>
@@ -27,28 +30,29 @@
 
 <div class="nhsuk-width-container">
 <main class="nhsuk-main-wrapper">
-<h1 class="nhsuk-heading-xl">Delete Patient</h1>
-<p class="nhsuk-body-l" id="patientInfo"></p>
-<div class="actions">
-  <button class="nhsuk-button nhsuk-button--warning" id="confirmDelete">Yes, Delete</button>
-  <a class="nhsuk-button nhsuk-button--secondary" href="patients.html">Cancel</a>
+
+<div class="breadcrumb">
+<a href="dashboard.html">Dashboard</a> &gt; <a href="patients.html">Patients</a> &gt; Delete Patient
 </div>
 
-<script>
-const urlParams=new URLSearchParams(window.location.search);
-const index=urlParams.get('index');
-const patients=JSON.parse(localStorage.getItem('patients')||'[]');
-if(!patients[index]) window.location.href='patients.html';
-const p=patients[index];
-document.getElementById('patientInfo').textContent=
-`Patient Name: ${p.name} | Room: ${p.room} | Status: ${p.status}`;
+<h1 class="nhsuk-heading-xl">Delete Patient</h1>
+<p>Are you sure you want to delete this patient? This action cannot be undone.</p>
 
-document.getElementById('confirmDelete').addEventListener('click',()=>{
+<button id="confirmDelete" class="nhsuk-button nhsuk-button--warning">Yes, Delete</button>
+<a href="patients.html" class="nhsuk-button nhsuk-button--secondary">Cancel</a>
+
+<script>
+const urlParams = new URLSearchParams(window.location.search);
+const index = urlParams.get('index');
+const patients = JSON.parse(localStorage.getItem('patients')||'[]');
+
+document.getElementById('confirmDelete').addEventListener('click', function(){
   patients.splice(index,1);
   localStorage.setItem('patients', JSON.stringify(patients));
   window.location.href='patients.html';
 });
 </script>
+
 </main>
 </div>
 
@@ -57,5 +61,6 @@ document.getElementById('confirmDelete').addEventListener('click',()=>{
 <p class="nhsuk-body-s">© Roblox Health Service</p>
 </div>
 </footer>
+
 </body>
 </html>
