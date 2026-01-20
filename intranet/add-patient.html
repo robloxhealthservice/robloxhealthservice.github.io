@@ -24,6 +24,45 @@
   </div>
 </header>
 
+  <form id="addPatientForm">
+  <label class="nhsuk-label" for="name">Patient Name</label>
+  <input class="nhsuk-input" id="name" type="text" required>
+
+  <label class="nhsuk-label" for="room">Room Number</label>
+  <input class="nhsuk-input" id="room" type="text" required>
+
+  <label class="nhsuk-label" for="condition">Condition</label>
+  <input class="nhsuk-input" id="condition" type="text" required>
+
+  <button class="nhsuk-button nhsuk-button--primary" type="submit">Add Patient</button>
+</form>
+
+<script>
+  const form = document.getElementById('addPatientForm');
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const name = document.getElementById('name').value.trim();
+    const room = document.getElementById('room').value.trim();
+    const condition = document.getElementById('condition').value.trim();
+
+    if (!name || !room || !condition) return;
+
+    // Get existing patients from localStorage
+    const patients = JSON.parse(localStorage.getItem('patients') || '[]');
+
+    // Add new patient
+    patients.push({ name, room, condition });
+
+    // Save back to localStorage
+    localStorage.setItem('patients', JSON.stringify(patients));
+
+    // Redirect to patients page
+    window.location.href = 'patients.html';
+  });
+</script>
+
 <div class="nhsuk-width-container">
   <main class="nhsuk-main-wrapper">
     <h1 class="nhsuk-heading-xl">Add New Patient</h1>
