@@ -5,6 +5,11 @@
   <title>Add Patient - Roblox Health Service</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="../assets/css/nhsuk.min.css">
+  <style>
+    body { margin-bottom: 2rem; }
+    form { max-width: 600px; margin-top: 1rem; }
+    button { margin-top: 1rem; }
+  </style>
 </head>
 <body class="nhsuk-body nhsuk-clearfix">
 
@@ -24,60 +29,54 @@
   </div>
 </header>
 
-  <form id="addPatientForm">
-  <label class="nhsuk-label" for="name">Patient Name</label>
-  <input class="nhsuk-input" id="name" type="text" required>
-
-  <label class="nhsuk-label" for="room">Room Number</label>
-  <input class="nhsuk-input" id="room" type="text" required>
-
-  <label class="nhsuk-label" for="condition">Condition</label>
-  <input class="nhsuk-input" id="condition" type="text" required>
-
-  <button class="nhsuk-button nhsuk-button--primary" type="submit">Add Patient</button>
-</form>
-
-<script>
-  const form = document.getElementById('addPatientForm');
-
-  form.addEventListener('submit', function(e) {
-    e.preventDefault();
-
-    const name = document.getElementById('name').value.trim();
-    const room = document.getElementById('room').value.trim();
-    const condition = document.getElementById('condition').value.trim();
-
-    if (!name || !room || !condition) return;
-
-    // Get existing patients from localStorage
-    const patients = JSON.parse(localStorage.getItem('patients') || '[]');
-
-    // Add new patient
-    patients.push({ name, room, condition });
-
-    // Save back to localStorage
-    localStorage.setItem('patients', JSON.stringify(patients));
-
-    // Redirect to patients page
-    window.location.href = 'patients.html';
-  });
-</script>
-
 <div class="nhsuk-width-container">
   <main class="nhsuk-main-wrapper">
     <h1 class="nhsuk-heading-xl">Add New Patient</h1>
-    <form onsubmit="alert('Patient added! (fake)'); return false;">
+
+    <form id="addPatientForm">
       <label class="nhsuk-label" for="name">Patient Name</label>
       <input class="nhsuk-input" id="name" type="text" required>
 
       <label class="nhsuk-label" for="room">Room Number</label>
       <input class="nhsuk-input" id="room" type="text" required>
 
-      <label class="nhsuk-label" for="condition">Condition</label>
-      <input class="nhsuk-input" id="condition" type="text" required>
+      <label class="nhsuk-label" for="presenting">Presenting Condition</label>
+      <input class="nhsuk-input" id="presenting" type="text" required>
+
+      <label class="nhsuk-label" for="diagnosis">Diagnosis</label>
+      <input class="nhsuk-input" id="diagnosis" type="text" required>
+
+      <label class="nhsuk-label" for="status">Status</label>
+      <select class="nhsuk-select" id="status" required>
+        <option value="">Select status</option>
+        <option value="Stable">Stable</option>
+        <option value="Critical">Critical</option>
+        <option value="Recovering">Recovering</option>
+      </select>
 
       <button class="nhsuk-button nhsuk-button--primary" type="submit">Add Patient</button>
     </form>
+
+    <script>
+      const form = document.getElementById('addPatientForm');
+      form.addEventListener('submit', function(e){
+        e.preventDefault();
+        const patient = {
+          name: document.getElementById('name').value.trim(),
+          room: document.getElementById('room').value.trim(),
+          presenting: document.getElementById('presenting').value.trim(),
+          diagnosis: document.getElementById('diagnosis').value.trim(),
+          status: document.getElementById('status').value
+        };
+        if (!patient.name || !patient.room || !patient.presenting || !patient.diagnosis || !patient.status) return;
+
+        const patients = JSON.parse(localStorage.getItem('patients') || '[]');
+        patients.push(patient);
+        localStorage.setItem('patients', JSON.stringify(patients));
+
+        window.location.href = 'patients.html';
+      });
+    </script>
   </main>
 </div>
 
