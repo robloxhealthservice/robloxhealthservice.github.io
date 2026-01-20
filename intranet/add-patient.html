@@ -1,73 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Add Patient - Roblox Health Service</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="../assets/css/nhsuk.min.css">
-  <style>
-    form { max-width: 600px; margin-top: 1rem; }
-    button { margin-top: 1rem; }
-  </style>
+<meta charset="UTF-8">
+<title>Add Patient - Roblox Health Service</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../assets/css/nhsuk.min.css">
+<style>
+form { max-width: 600px; margin-top: 1rem; }
+button { margin-top: 1rem; margin-right: 0.5rem; }
+</style>
 </head>
 <body class="nhsuk-body nhsuk-clearfix">
 
 <header class="nhsuk-header">
   <div class="nhsuk-width-container nhsuk-header__container">
     <span class="nhsuk-header__logo-text">Roblox Health Service</span>
+    <nav class="nhsuk-header__navigation" aria-label="Primary navigation">
+      <ul class="nhsuk-header__navigation-list">
+        <li class="nhsuk-header__navigation-item"><a class="nhsuk-header__navigation-link" href="dashboard.html">Dashboard</a></li>
+        <li class="nhsuk-header__navigation-item"><a class="nhsuk-header__navigation-link" href="patients.html">Patients</a></li>
+        <li class="nhsuk-header__navigation-item"><a class="nhsuk-header__navigation-link" href="add-patient.html">Add Patient</a></li>
+        <li class="nhsuk-header__navigation-item"><a class="nhsuk-header__navigation-link" href="login.html">Logout</a></li>
+      </ul>
+    </nav>
   </div>
 </header>
 
 <div class="nhsuk-width-container">
-  <main class="nhsuk-main-wrapper">
-    <h1 class="nhsuk-heading-xl">Add New Patient</h1>
+<main class="nhsuk-main-wrapper">
+  <h1 class="nhsuk-heading-xl">Add New Patient</h1>
+  <form id="addPatientForm">
+    <label class="nhsuk-label" for="name">Patient Name</label>
+    <input class="nhsuk-input" id="name" type="text" required>
 
-    <form id="addPatientForm">
-      <label class="nhsuk-label" for="name">Patient Name</label>
-      <input class="nhsuk-input" id="name" type="text" required>
+    <label class="nhsuk-label" for="room">Room Number</label>
+    <input class="nhsuk-input" id="room" type="text" required>
 
-      <label class="nhsuk-label" for="room">Room Number</label>
-      <input class="nhsuk-input" id="room" type="text" required>
+    <label class="nhsuk-label" for="presenting">Presenting Condition</label>
+    <input class="nhsuk-input" id="presenting" type="text" required>
 
-      <label class="nhsuk-label" for="presenting">Presenting Condition</label>
-      <input class="nhsuk-input" id="presenting" type="text" required>
+    <label class="nhsuk-label" for="diagnosis">Diagnosis</label>
+    <input class="nhsuk-input" id="diagnosis" type="text" required>
 
-      <label class="nhsuk-label" for="diagnosis">Diagnosis</label>
-      <input class="nhsuk-input" id="diagnosis" type="text" required>
+    <label class="nhsuk-label" for="status">Status</label>
+    <select class="nhsuk-select" id="status" required>
+      <option value="">Select status</option>
+      <option value="Stable">Stable</option>
+      <option value="Critical">Critical</option>
+      <option value="Recovering">Recovering</option>
+    </select>
 
-      <label class="nhsuk-label" for="status">Status</label>
-      <select class="nhsuk-select" id="status" required>
-        <option value="">Select status</option>
-        <option value="Stable">Stable</option>
-        <option value="Critical">Critical</option>
-        <option value="Recovering">Recovering</option>
-      </select>
+    <button class="nhsuk-button nhsuk-button--primary" type="submit">Add Patient</button>
+    <a class="nhsuk-button nhsuk-button--secondary" href="patients.html">Cancel</a>
+  </form>
 
-      <button class="nhsuk-button nhsuk-button--primary" type="submit">Add Patient</button>
-      <a class="nhsuk-button nhsuk-button--secondary" href="patients.html">Cancel</a>
-    </form>
+  <script>
+  const form = document.getElementById('addPatientForm');
+  form.addEventListener('submit', e=>{
+    e.preventDefault();
+    const patient = {
+      name: document.getElementById('name').value.trim(),
+      room: document.getElementById('room').value.trim(),
+      presenting: document.getElementById('presenting').value.trim(),
+      diagnosis: document.getElementById('diagnosis').value.trim(),
+      status: document.getElementById('status').value
+    };
+    if (!patient.name || !patient.room || !patient.presenting || !patient.diagnosis || !patient.status) return;
 
-    <script>
-      const form = document.getElementById('addPatientForm');
-      form.addEventListener('submit', function(e){
-        e.preventDefault();
-        const patient = {
-          name: document.getElementById('name').value.trim(),
-          room: document.getElementById('room').value.trim(),
-          presenting: document.getElementById('presenting').value.trim(),
-          diagnosis: document.getElementById('diagnosis').value.trim(),
-          status: document.getElementById('status').value
-        };
-        if (!patient.name || !patient.room || !patient.presenting || !patient.diagnosis || !patient.status) return;
-
-        const patients = JSON.parse(localStorage.getItem('patients') || '[]');
-        patients.push(patient);
-        localStorage.setItem('patients', JSON.stringify(patients));
-
-        window.location.href = 'patients.html';
-      });
-    </script>
-  </main>
+    const patients = JSON.parse(localStorage.getItem('patients') || '[]');
+    patients.push(patient);
+    localStorage.setItem('patients', JSON.stringify(patients));
+    window.location.href = 'patients.html';
+  });
+  </script>
+</main>
 </div>
 
 <footer class="nhsuk-footer">
@@ -75,6 +81,5 @@
     <p class="nhsuk-body-s">© Roblox Health Service</p>
   </div>
 </footer>
-
 </body>
 </html>
