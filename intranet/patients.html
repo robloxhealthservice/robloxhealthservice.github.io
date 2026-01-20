@@ -39,6 +39,7 @@ tr.Stable { background-color: #e5ffe5; }
 
 <div class="nhsuk-width-container">
 <main class="nhsuk-main-wrapper">
+
 <h1 class="nhsuk-heading-xl">Patient List</h1>
 
 <label class="nhsuk-label" for="search">Search Patients</label>
@@ -62,9 +63,9 @@ tr.Stable { background-color: #e5ffe5; }
 <div class="pagination" id="pagination"></div>
 
 <script>
-let patients = JSON.parse(localStorage.getItem('patients') || '[]');
+let patients = JSON.parse(localStorage.getItem('patients')||'[]');
 let sortAsc = true;
-let currentSort = 'status'; // default: critical on top
+let currentSort = 'status';
 let searchFilter = '';
 let currentPage = 1;
 const rowsPerPage = 5;
@@ -74,15 +75,15 @@ function savePatients() {
   renderTable();
 }
 
-function renderTable() {
+function renderTable(){
   const tableBody = document.getElementById('patientBody');
-  tableBody.innerHTML = '';
+  tableBody.innerHTML='';
   let filtered = patients.filter(p=>p.name.toLowerCase().includes(searchFilter.toLowerCase()));
 
-  // Sort with critical first if status sorting
+  // Critical on top if sorting by status
   if(currentSort==='status'){
     filtered.sort((a,b)=>{
-      const order = {'Critical':0,'Recovering':1,'Stable':2};
+      const order={'Critical':0,'Recovering':1,'Stable':2};
       return order[a.status]-order[b.status];
     });
   } else {
@@ -97,10 +98,11 @@ function renderTable() {
   if(currentPage>totalPages) currentPage=1;
   const start = (currentPage-1)*rowsPerPage;
   const end = start + rowsPerPage;
-  filtered.slice(start,end).forEach((p,index)=>{
-    const tr = document.createElement('tr');
-    tr.className = p.status;
-    tr.innerHTML = `<td>${p.name}</td>
+
+  filtered.slice(start,end).forEach((p)=>{
+    const tr=document.createElement('tr');
+    tr.className=p.status;
+    tr.innerHTML=`<td>${p.name}</td>
       <td>${p.room}</td>
       <td>${p.presenting}</td>
       <td>${p.diagnosis}</td>
@@ -116,7 +118,7 @@ function renderTable() {
   const pagDiv = document.getElementById('pagination');
   pagDiv.innerHTML='';
   for(let i=1;i<=totalPages;i++){
-    const btn = document.createElement('button');
+    const btn=document.createElement('button');
     btn.textContent=i;
     btn.className='nhsuk-button nhsuk-button--secondary';
     if(i===currentPage) btn.disabled=true;
@@ -125,29 +127,45 @@ function renderTable() {
   }
 }
 
-document.getElementById('search').addEventListener('input',function(){
-  searchFilter=this.value; currentPage=1; renderTable();
-});
-
 // Sorting
 function sortTable(col){
   if(currentSort===col) sortAsc=!sortAsc;
-  else{ currentSort=col; sortAsc=true; }
+  else { currentSort=col; sortAsc=true; }
   renderTable();
 }
 
-// Export CSV
-document.getElementById('exportCSV').addEventListener('click',function(){
-  let csv='Name,Room,Presenting Condition,Diagnosis,Status\n';
-  patients.forEach(p=>{csv+=`${p.name},${p.room},${p.presenting},${p.diagnosis},${p.status}\n`;});
-  const blob = new Blob([csv], {type:'text/csv'});
-  const url=URL.createObjectURL(blob);
-  const a=document.createElement('a'); a.href=url; a.download='patients.csv';
-  a.click(); URL.revokeObjectURL(url);
+// Search filter
+document.getElementById('search').addEventListener('input', function(){
+  searchFilter=this.value; currentPage=1; renderTable();
 });
 
+// Export CSV
+document.getElementById('exportCSV').addEventListener('click', function(){
+  let csv='Name,Room,Presenting Condition,Diagnosis,Status\n';
+  patients.forEach(p=>{ csv+=`${p.name},${p.room},${p.presenting},${p.diagnosis},${p.status}\n`; });
+  const blob = new Blob([csv], {type:'text/csv'});
+  const url = URL.createObjectURL(blob);
+  const a=document.createElement('a'); a.href=url; a.download='patients.csv'; a.click();
+  URL.revokeObjectURL(url);
+});
+
+// Initial render
 renderTable();
+
+// Live updates across tabs/windows
+window.addEventListener('storage', function(e){
+  if(e.key==='patients'){ patients=JSON.parse(e.newValue||'[]'); renderTable(); }
+});
+
+// Live updates in same tab (polling every 2s)
+setInterval(()=>{
+  const updated = JSON.parse(localStorage.getItem('patients')||'[]');
+  if(JSON.stringify(updated)!==JSON.stringify(patients)){
+    patients=updated; renderTable();
+  }
+},2000);
 </script>
+
 </main>
 </div>
 
@@ -156,5 +174,6 @@ renderTable();
 <p class="nhsuk-body-s">© Roblox Health Service</p>
 </div>
 </footer>
+
 </body>
 </html>
