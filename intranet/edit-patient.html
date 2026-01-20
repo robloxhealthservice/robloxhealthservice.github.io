@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Edit Patient - Roblox Health Service</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../assets/css/nhsuk.min.css">
+</head>
+<body class="nhsuk-body nhsuk-clearfix">
+
+<header class="nhsuk-header">
+  <div class="nhsuk-width-container nhsuk-header__container">
+    <span class="nhsuk-header__logo-text">Roblox Health Service</span>
+  </div>
+</header>
+
+<div class="nhsuk-width-container">
+  <main class="nhsuk-main-wrapper">
+    <h1 class="nhsuk-heading-xl">Edit Patient</h1>
+
+    <form id="editForm">
+      <label class="nhsuk-label" for="name">Patient Name</label>
+      <input class="nhsuk-input" id="name" type="text" required>
+
+      <label class="nhsuk-label" for="room">Room Number</label>
+      <input class="nhsuk-input" id="room" type="text" required>
+
+      <label class="nhsuk-label" for="presenting">Presenting Condition</label>
+      <input class="nhsuk-input" id="presenting" type="text" required>
+
+      <label class="nhsuk-label" for="diagnosis">Diagnosis</label>
+      <input class="nhsuk-input" id="diagnosis" type="text" required>
+
+      <label class="nhsuk-label" for="status">Status</label>
+      <select class="nhsuk-select" id="status" required>
+        <option value="Stable">Stable</option>
+        <option value="Critical">Critical</option>
+        <option value="Recovering">Recovering</option>
+      </select>
+
+      <button class="nhsuk-button nhsuk-button--primary" type="submit">Save Changes</button>
+      <a class="nhsuk-button nhsuk-button--secondary" href="patients.html">Cancel</a>
+    </form>
+
+    <script>
+      const urlParams = new URLSearchParams(window.location.search);
+      const index = urlParams.get('index');
+      const patients = JSON.parse(localStorage.getItem('patients') || '[]');
+      if(!patients[index]) window.location.href = 'patients.html';
+
+      // Prefill form
+      const p = patients[index];
+      document.getElementById('name').value = p.name;
+      document.getElementById('room').value = p.room;
+      document.getElementById('presenting').value = p.presenting;
+      document.getElementById('diagnosis').value = p.diagnosis;
+      document.getElementById('status').value = p.status;
+
+      document.getElementById('editForm').addEventListener('submit', function(e){
+        e.preventDefault();
+        patients[index] = {
+          name: document.getElementById('name').value,
+          room: document.getElementById('room').value,
+          presenting: document.getElementById('presenting').value,
+          diagnosis: document.getElementById('diagnosis').value,
+          status: document.getElementById('status').value
+        };
+        localStorage.setItem('patients', JSON.stringify(patients));
+        window.location.href = 'patients.html';
+      });
+    </script>
+  </main>
+</div>
+
+<footer class="nhsuk-footer">
+  <div class="nhsuk-width-container">
+    <p class="nhsuk-body-s">© Roblox Health Service</p>
+  </div>
+</footer>
+
+</body>
+</html>
