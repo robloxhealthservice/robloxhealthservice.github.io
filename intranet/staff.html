@@ -14,31 +14,31 @@ tr:hover{background:#e0f3ff;}
 .breadcrumb{font-size:0.9rem;margin-bottom:1rem;}
 .breadcrumb a{color:#005eb8;text-decoration:none;}
 .badge{padding:0.25rem 0.5rem;border-radius:4px;color:white;font-weight:bold;}
-.Chairman{background:#6f42c1;}
-.Chief Executive Officer{background:#6f42c1;}
-.Deputy Chief Executive Officer{background:#6f42c1;}
-.Board of Directors{background:#6f42c1;}
-.Clinical Lead{background:#2c24bf;}
-.Consultant{background:#2c24bf;}
-.Matron{background:#2468bf;}
-.Charge Nurse{background:#2468bf;}
-.Registrar{background:#2468bf;}
-.Advanced Practitioner{background:#3fb1d3;}
-.Pharmacist{background:#3fb1d3;}
-.Nurse Specialist{background:#3fb1d3;}
-.Nurse Practitioner{background:#3fb1d3;}
-.Staff Nurse{background:#3fb1d3;}
-.Foundation Years{background:#3fb1d3;}
-.Healthcare Assistant{background:#3fb1d3;}
+.Chairman{background:#6f42c1;} 
+.Chief Executive Officer{background:#6f42c1;} 
+.Deputy Chief Executive Officer{background:#6f42c1;} 
+.Board of Directors{background:#6f42c1;} 
+.Clinical Lead{background:#2c24bf;} 
+.Consultant{background:#2c24bf;} 
+.Matron{background:#2468bf;} 
+.Charge Nurse{background:#2468bf;} 
+.Registrar{background:#2468bf;} 
+.Advanced Practitioner{background:#3fb1d3;} 
+.Pharmacist{background:#3fb1d3;} 
+.Nurse Specialist{background:#3fb1d3;} 
+.Nurse Practitioner{background:#3fb1d3;} 
+.Staff Nurse{background:#3fb1d3;} 
+.Foundation Years{background:#3fb1d3;} 
+.Healthcare Assistant{background:#3fb1d3;} 
 .Ancillary Services{background:#3fb1d3;}
 </style>
 </head>
 <body class="nhsuk-body">
 
 <script>
-// ---- TEMP AUTH SIMULATION ----
+// --- TEMP AUTH ---
 const currentUser = JSON.parse(localStorage.getItem('currentUser')) || { role:'Admin' };
-if(currentUser.role !== 'Admin'){
+if (currentUser.role !== 'Admin') {
   window.location.href = 'dashboard';
 }
 </script>
@@ -81,31 +81,36 @@ if(currentUser.role !== 'Admin'){
 </table>
 
 <script>
-let staff = JSON.parse(localStorage.getItem('staff')) || [
-  {name:'Dr Smith', role:'Admin', department:'Management'},
-  {name:'Dr Patel', role:'Doctor', department:'Emergency'},
-  {name:'Nurse Jones', role:'Nurse', department:'Ward'}
-];
+// ✅ Seed default staff ONLY ONCE
+if (!localStorage.getItem('staff')) {
+  localStorage.setItem('staff', JSON.stringify([
+    { name:'Dr Smith', role:'Admin', department:'Management' }
+  ]));
+}
 
-function renderStaff(){
+// Load staff safely
+let staff = JSON.parse(localStorage.getItem('staff')) || [];
+
+function renderStaff() {
   const body = document.getElementById('staffBody');
-  body.innerHTML='';
-  staff.forEach((s,i)=>{
+  body.innerHTML = '';
+
+  staff.forEach((s, i) => {
     body.innerHTML += `
       <tr>
-        <td>${s.name}</td>
+        <td>${s.name || 'Unknown'}</td>
         <td><span class="badge ${s.role}">${s.role}</span></td>
-        <td>${s.department}</td>
+        <td>${s.department || '-'}</td>
         <td>
-          <a class="nhsuk-button nhsuk-button--secondary" href="edit-staff?index=${i}">Edit</a>
-          <a class="nhsuk-button nhsuk-button--warning" href="delete-staff?index=${i}">Delete</a>
+          <a class="nhsuk-button nhsuk-button--secondary" href="edit-staff.html?index=${i}">Edit</a>
+          <a class="nhsuk-button nhsuk-button--warning" href="delete-staff.html?index=${i}">Delete</a>
         </td>
-      </tr>`;
+      </tr>
+    `;
   });
 }
 
 renderStaff();
-localStorage.setItem('staff', JSON.stringify(staff));
 </script>
 
 </main>
