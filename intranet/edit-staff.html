@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Edit Staff Member - Roblox Health Ministry</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../assets/css/nhsuk.min.css">
+<style>
+.breadcrumb{font-size:0.9rem;margin-bottom:1rem;}
+.nhsuk-input,.nhsuk-select{margin-bottom:1rem;}
+</style>
+</head>
+<body class="nhsuk-body">
+
+<script>
+const currentUser = JSON.parse(localStorage.getItem('currentUser')) || {role:'Admin'};
+if(currentUser.role !== 'Admin') window.location.href='dashboard';
+</script>
+
+<header class="nhsuk-header">
+<div class="nhsuk-width-container nhsuk-header__container">
+<span class="nhsuk-header__logo-text">Roblox Health Ministry</span>
+<nav class="nhsuk-header__navigation">
+<ul class="nhsuk-header__navigation-list">
+<li class="nhsuk-header__navigation-item"><a class="nhsuk-header__navigation-link" href="dashboard">Dashboard</a></li>
+<li class="nhsuk-header__navigation-item"><a class="nhsuk-header__navigation-link" href="staff">Staff</a></li>
+</ul>
+</nav>
+</div>
+</header>
+
+<div class="nhsuk-width-container">
+<main class="nhsuk-main-wrapper">
+
+<h1 class="nhsuk-heading-xl">Edit Staff Member</h1>
+
+<form id="editStaffForm">
+<label class="nhsuk-label">Name</label>
+<input class="nhsuk-input" id="name" required>
+
+<label class="nhsuk-label">Department</label>
+<input class="nhsuk-input" id="department" required>
+
+<label class="nhsuk-label">Role</label>
+<select class="nhsuk-select" id="role">
+<option value="Admin">Admin</option>
+<option value="Doctor">Doctor</option>
+<option value="Nurse">Nurse</option>
+<option value="Reception">Reception</option>
+</select>
+
+<button class="nhsuk-button nhsuk-button--primary">Save Changes</button>
+<a href="staff" class="nhsuk-button nhsuk-button--secondary">Cancel</a>
+</form>
+
+<script>
+const index = new URLSearchParams(window.location.search).get('index');
+const staff = JSON.parse(localStorage.getItem('staff')) || [];
+const member = staff[index];
+
+name.value = member.name;
+department.value = member.department;
+role.value = member.role;
+
+editStaffForm.addEventListener('submit', e=>{
+  e.preventDefault();
+  staff[index] = {
+    name: name.value,
+    department: department.value,
+    role: role.value
+  };
+  localStorage.setItem('staff', JSON.stringify(staff));
+  window.location.href='staff';
+});
+</script>
+
+</main>
+</div>
+</body>
+</html>
