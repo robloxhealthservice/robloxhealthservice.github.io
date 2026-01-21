@@ -19,10 +19,10 @@
 <span class="nhsuk-header__logo-text">Roblox Health Service</span>
 <nav class="nhsuk-header__navigation" aria-label="Primary navigation">
 <ul class="nhsuk-header__navigation-list">
-<li class="nhsuk-header__navigation-item"><a class="nhsuk-header__navigation-link" href="dashboard.html">Dashboard</a></li>
-<li class="nhsuk-header__navigation-item"><a class="nhsuk-header__navigation-link" href="patients.html">Patients</a></li>
-<li class="nhsuk-header__navigation-item"><a class="nhsuk-header__navigation-link" href="add-patient.html">Add Patient</a></li>
-<li class="nhsuk-header__navigation-item"><a class="nhsuk-header__navigation-link" href="login.html">Logout</a></li>
+<li class="nhsuk-header__navigation-item"><a class="nhsuk-header__navigation-link" href="dashboard">Dashboard</a></li>
+<li class="nhsuk-header__navigation-item"><a class="nhsuk-header__navigation-link" href="patients">Patients</a></li>
+<li class="nhsuk-header__navigation-item"><a class="nhsuk-header__navigation-link" href="add-patient">Add Patient</a></li>
+<li class="nhsuk-header__navigation-item"><a class="nhsuk-header__navigation-link" href="login">Logout</a></li>
 </ul>
 </nav>
 </div>
@@ -32,14 +32,14 @@
 <main class="nhsuk-main-wrapper">
 
 <div class="breadcrumb">
-<a href="dashboard.html">Dashboard</a> &gt; <a href="patients.html">Patients</a> &gt; Delete Patient
+<a href="dashboard">Dashboard</a> &gt; <a href="patients">Patients</a> &gt; Delete Patient
 </div>
 
 <h1 class="nhsuk-heading-xl">Delete Patient</h1>
 <p>Are you sure you want to delete this patient? This action cannot be undone.</p>
 
 <button id="confirmDelete" class="nhsuk-button nhsuk-button--warning">Yes, Delete</button>
-<a href="patients.html" class="nhsuk-button nhsuk-button--secondary">Cancel</a>
+<a href="patients" class="nhsuk-button nhsuk-button--secondary">Cancel</a>
 
 <script>
 const urlParams = new URLSearchParams(window.location.search);
@@ -49,7 +49,7 @@ const patients = JSON.parse(localStorage.getItem('patients')||'[]');
 document.getElementById('confirmDelete').addEventListener('click', function(){
   patients.splice(index,1);
   localStorage.setItem('patients', JSON.stringify(patients));
-  window.location.href='patients.html';
+  window.location.href='patients';
 });
 </script>
 
