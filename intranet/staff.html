@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Staff Management - Roblox Health Ministry</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../assets/css/nhsuk.min.css">
+<style>
+table { width:100%; border-collapse:collapse; margin-top:1rem; }
+th, td { border:1px solid #d0d0d0; padding:0.5rem; }
+th { background:#f7f7f7; }
+tr:nth-child(even){background:#f9f9f9;}
+tr:hover{background:#e0f3ff;}
+.breadcrumb{font-size:0.9rem;margin-bottom:1rem;}
+.breadcrumb a{color:#005eb8;text-decoration:none;}
+.badge{padding:0.25rem 0.5rem;border-radius:4px;color:white;font-weight:bold;}
+.Admin{background:#6f42c1;}
+.Doctor{background:#0275d8;}
+.Nurse{background:#5cb85c;}
+.Reception{background:#6c757d;}
+</style>
+</head>
+<body class="nhsuk-body">
+
+<script>
+// ---- TEMP AUTH SIMULATION ----
+const currentUser = JSON.parse(localStorage.getItem('currentUser')) || { role:'Admin' };
+if(currentUser.role !== 'Admin'){
+  window.location.href = 'dashboard';
+}
+</script>
+
+<header class="nhsuk-header">
+<div class="nhsuk-width-container nhsuk-header__container">
+<span class="nhsuk-header__logo-text">Roblox Health Ministry</span>
+<nav class="nhsuk-header__navigation">
+<ul class="nhsuk-header__navigation-list">
+<li class="nhsuk-header__navigation-item"><a class="nhsuk-header__navigation-link" href="dashboard">Dashboard</a></li>
+<li class="nhsuk-header__navigation-item"><a class="nhsuk-header__navigation-link" href="patients">Patients</a></li>
+<li class="nhsuk-header__navigation-item"><a class="nhsuk-header__navigation-link" href="staff">Staff</a></li>
+<li class="nhsuk-header__navigation-item"><a class="nhsuk-header__navigation-link" href="login">Logout</a></li>
+</ul>
+</nav>
+</div>
+</header>
+
+<div class="nhsuk-width-container">
+<main class="nhsuk-main-wrapper">
+
+<div class="breadcrumb">
+<a href="dashboard">Dashboard</a> &gt; Staff Management
+</div>
+
+<h1 class="nhsuk-heading-xl">Staff Management</h1>
+
+<a href="add-staff" class="nhsuk-button nhsuk-button--primary">Add Staff Member</a>
+
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Role</th>
+<th>Department</th>
+<th>Actions</th>
+</tr>
+</thead>
+<tbody id="staffBody"></tbody>
+</table>
+
+<script>
+let staff = JSON.parse(localStorage.getItem('staff')) || [
+  {name:'Dr Smith', role:'Admin', department:'Management'},
+  {name:'Dr Patel', role:'Doctor', department:'Emergency'},
+  {name:'Nurse Jones', role:'Nurse', department:'Ward'}
+];
+
+function renderStaff(){
+  const body = document.getElementById('staffBody');
+  body.innerHTML='';
+  staff.forEach((s,i)=>{
+    body.innerHTML += `
+      <tr>
+        <td>${s.name}</td>
+        <td><span class="badge ${s.role}">${s.role}</span></td>
+        <td>${s.department}</td>
+        <td>
+          <a class="nhsuk-button nhsuk-button--secondary" href="edit-staff?index=${i}">Edit</a>
+          <a class="nhsuk-button nhsuk-button--warning" href="delete-staff?index=${i}">Delete</a>
+        </td>
+      </tr>`;
+  });
+}
+
+renderStaff();
+localStorage.setItem('staff', JSON.stringify(staff));
+</script>
+
+</main>
+</div>
+
+<footer class="nhsuk-footer">
+<div class="nhsuk-width-container">
+<p class="nhsuk-body-s">© Roblox Health Ministry</p>
+</div>
+</footer>
+
+</body>
+</html>
