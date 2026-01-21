@@ -20,10 +20,10 @@
 <span class="nhsuk-header__logo-text">Roblox Health Service</span>
 <nav class="nhsuk-header__navigation" aria-label="Primary navigation">
 <ul class="nhsuk-header__navigation-list">
-<li class="nhsuk-header__navigation-item"><a class="nhsuk-header__navigation-link" href="dashboard.html">Dashboard</a></li>
-<li class="nhsuk-header__navigation-item"><a class="nhsuk-header__navigation-link" href="patients.html">Patients</a></li>
-<li class="nhsuk-header__navigation-item"><a class="nhsuk-header__navigation-link" href="add-patient.html">Add Patient</a></li>
-<li class="nhsuk-header__navigation-item"><a class="nhsuk-header__navigation-link" href="login.html">Logout</a></li>
+<li class="nhsuk-header__navigation-item"><a class="nhsuk-header__navigation-link" href="dashboard">Dashboard</a></li>
+<li class="nhsuk-header__navigation-item"><a class="nhsuk-header__navigation-link" href="patients">Patients</a></li>
+<li class="nhsuk-header__navigation-item"><a class="nhsuk-header__navigation-link" href="add-patient">Add Patient</a></li>
+<li class="nhsuk-header__navigation-item"><a class="nhsuk-header__navigation-link" href="login">Logout</a></li>
 </ul>
 </nav>
 </div>
@@ -33,7 +33,7 @@
 <main class="nhsuk-main-wrapper">
 
 <div class="breadcrumb">
-<a href="dashboard.html">Dashboard</a> &gt; <a href="patients.html">Patients</a> &gt; Add Patient
+<a href="dashboard">Dashboard</a> &gt; <a href="patients">Patients</a> &gt; Add Patient
 </div>
 
 <h1 class="nhsuk-heading-xl">Add New Patient</h1>
@@ -59,7 +59,7 @@
 </select>
 
 <button type="submit" class="nhsuk-button nhsuk-button--primary">Add Patient</button>
-<a href="patients.html" class="nhsuk-button nhsuk-button--secondary">Cancel</a>
+<a href="patients" class="nhsuk-button nhsuk-button--secondary">Cancel</a>
 </form>
 
 <script>
@@ -76,7 +76,7 @@ form.addEventListener('submit', function(e){
     timestamp: Date.now()
   });
   localStorage.setItem('patients', JSON.stringify(patients));
-  window.location.href='patients.html';
+  window.location.href='patients';
 });
 </script>
 
